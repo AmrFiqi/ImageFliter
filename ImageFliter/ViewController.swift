@@ -28,8 +28,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBAction func changeFliter(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Choose Filter", message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: "CIBumbDistortion", style: .default, handler: setFilter))
-        alertController.addAction(UIAlertAction(title: "CIGaussinBlur", style: .default, handler: setFilter))
+        alertController.addAction(UIAlertAction(title: "CIBumpDistortion", style: .default, handler: setFilter))
+        alertController.addAction(UIAlertAction(title: "CIGaussianBlur", style: .default, handler: setFilter))
         alertController.addAction(UIAlertAction(title: "CIPixellate", style: .default, handler: setFilter))
         alertController.addAction(UIAlertAction(title: "CISepiaTone", style: .default, handler: setFilter))
         alertController.addAction(UIAlertAction(title: "CITwirlDistortion", style: .default, handler: setFilter))
