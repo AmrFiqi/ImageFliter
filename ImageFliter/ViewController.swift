@@ -29,7 +29,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func changeFliter(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Choose Filter", message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: "CIBumpDistortion", style: .default, handler: setFilter))
-        alertController.addAction(UIAlertAction(title: "CIGaussianBlur  ", style: .default, handler: setFilter))
+        alertController.addAction(UIAlertAction(title: "CIGaussianBlur", style: .default, handler: setFilter))
         alertController.addAction(UIAlertAction(title: "CIPixellate", style: .default, handler: setFilter))
         alertController.addAction(UIAlertAction(title: "CISepiaTone", style: .default, handler: setFilter))
         alertController.addAction(UIAlertAction(title: "CITwirlDistortion", style: .default, handler: setFilter))
@@ -50,14 +50,26 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func save(_ sender: Any) {
+        if imageView.image == nil {
+            let ac = UIAlertController(title: "Error", message: "There is no Image to save.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
         guard let imageChosen = imageView.image else {return}
         UIImageWriteToSavedPhotosAlbum(imageChosen, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        
     }
     
     // MARK: - Class Methods
     
     func setupTitle() {
-        title = "Image Filter"
+        if currentFilter == nil {
+            title = "Image Filters"
+        }
+        else{
+            title = currentFilter.name
+        }
+        
     }
     
     func setupNavigation() {
@@ -109,6 +121,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let starterImage = CIImage(image: currentImage)
         currentFilter.setValue(starterImage, forKey: kCIInputImageKey)
         
+        setupTitle()
         applyProcessing()
     }
     
