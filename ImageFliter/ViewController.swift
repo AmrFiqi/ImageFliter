@@ -29,7 +29,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func changeFliter(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Choose Filter", message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: "CIBumpDistortion", style: .default, handler: setFilter))
-        alertController.addAction(UIAlertAction(title: "CIGaussianBlur", style: .default, handler: setFilter))
+        alertController.addAction(UIAlertAction(title: "CIGaussianBlur  ", style: .default, handler: setFilter))
         alertController.addAction(UIAlertAction(title: "CIPixellate", style: .default, handler: setFilter))
         alertController.addAction(UIAlertAction(title: "CISepiaTone", style: .default, handler: setFilter))
         alertController.addAction(UIAlertAction(title: "CITwirlDistortion", style: .default, handler: setFilter))
@@ -50,12 +50,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func save(_ sender: Any) {
+        guard let imageChosen = imageView.image else {return}
+        UIImageWriteToSavedPhotosAlbum(imageChosen, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     
     // MARK: - Class Methods
     
     func setupTitle() {
-        title = "YACIFP"
+        title = "Image Filter"
     }
     
     func setupNavigation() {
@@ -108,6 +110,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         currentFilter.setValue(starterImage, forKey: kCIInputImageKey)
         
         applyProcessing()
+    }
+    
+    @objc func image (_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            // we got back an error!
+            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
     }
     
     // MARK: - ImagePickerController Delegate Methods
